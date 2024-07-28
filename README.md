@@ -1,3 +1,3 @@
 # FastAPI
 
-Curso de FastAPI do dunossauro
+Curso de FastAPI do zero apresentado pelo dunossauro
