@@ -28,10 +28,11 @@ extend-exclude = ['migrations']
 
 [tool.ruff.lint]
 preview = true
-select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+select = ['I', 'F', 'E', 'W', 'PL', 'PT', 'B']
 
 [tool.ruff.format]
 preview = true
+quote-style = 'single'
 
 [tool.pytest.ini_options]
 pythonpath = "."
