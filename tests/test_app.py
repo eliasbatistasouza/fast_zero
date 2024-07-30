@@ -18,3 +18,43 @@ def test_creat_user(client):
         'username': 'testusername',
         'email': 'test@email.com',
     }
+
+
+def test_read_users(client):
+    response = client.get('/users')
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        'users': [
+            {
+                'username': 'testusername',
+                'email': 'test@email.com',
+                'id': 1,
+            }
+        ]
+    }
+
+
+def test_update_user(client):
+    response = client.put(
+        '/users/1',
+        json={
+            'username': 'bob',
+            'email': 'bob@email.com',
+            'password': 'mypassword',
+        },
+    )
+    # Testar status code 404
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        'username': 'bob',
+        'email': 'bob@email.com',
+        'id': 1,
+    }
+
+
+def test_delete_user(client):
+    response = client.delete('users/1')
+    # Testar status code 404
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {'message': 'User deleted'}

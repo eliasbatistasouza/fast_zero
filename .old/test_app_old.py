@@ -10,16 +10,16 @@ client = TestClient(app)
 def test_root_deve_retornar_ok_ola_mundo():
     client = TestClient(app)  # Arrange
 
-    response = client.get("/")  # Act
+    response = client.get('/')  # Act
 
     assert response.status_code == HTTPStatus.OK  # Assert
-    assert response.json() == {"message": "Hello, World!"}  # Assert
+    assert response.json() == {'message': 'Hello, World!'}  # Assert
 
 
 def test_homework():
     client = TestClient(app)
 
-    response = client.get("/homework")
+    response = client.get('/homework')
 
     assert response.status_code == HTTPStatus.OK
     assert (
