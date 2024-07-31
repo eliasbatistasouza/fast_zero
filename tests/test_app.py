@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 
-def test_creat_user(client):
+def test_create_user(client):
     response = client.post(
         '/users/',
         json={
