@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+
 def test_read_root(client):
     # client = TestClient(app)  # Arrange
 
