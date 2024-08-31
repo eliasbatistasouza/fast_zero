@@ -31,6 +31,34 @@ def test_create_user(client):
     }
 
 
+def test_create_user_username_already_exists(client, user):
+    response = client.post(
+        '/users/',
+        json={
+            'username': 'test',
+            'email': 'test@email.com',
+            'password': 'testtest',
+        },
+    )
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.json() == {'detail': 'Username already exists'}
+
+
+def test_create_user_email_already_exists(client, user):
+    response = client.post(
+        '/users/',
+        json={
+            'username': 'newtest',
+            'email': 'test@test.com',
+            'password': 'testtest',
+        },
+    )
+
+    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.json() == {'detail': 'Email already exists'}
+
+
 def test_read_users(client):
     response = client.get('/users')
 
@@ -46,15 +74,22 @@ def test_read_users_when_populated(client, user):
     assert response.json() == {'users': [user_schema]}
 
 
-def test_read_user(client):
+def test_read_single_user(client, user):
     response = client.get('/users/1')
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
-        'username': 'elias',
-        'email': 'elias@email.com',
         'id': 1,
+        'username': 'test',
+        'email': 'test@test.com',
     }
+
+
+def test_read_single_user_not_found(client, user):
+    response = client.get('/users/2')
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.json() == {'detail': 'User not found'}
 
 
 def test_update_user(client, user):
@@ -69,9 +104,9 @@ def test_update_user(client, user):
     # Testar status code 404
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
+        'id': 1,
         'username': 'giselle',
         'email': 'giselle@email.com',
-        'id': 1,
     }
 
 
@@ -98,13 +133,6 @@ def test_delete_user(client, user):
 
 def test_delete_user_not_found(client, user):
     response = client.delete('/users/2')
-
-    assert response.status_code == HTTPStatus.NOT_FOUND
-    assert response.json() == {'detail': 'User not found'}
-
-
-def test_read_user_not_found(client, user):
-    response = client.get('/users/2')
 
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json() == {'detail': 'User not found'}
