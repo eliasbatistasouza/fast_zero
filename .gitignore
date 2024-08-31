@@ -4,6 +4,9 @@
 # sqlite Database file
 database.db
 
+# TODO List
+TODO.md
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
