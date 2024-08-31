@@ -43,13 +43,15 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
     session.commit()
     session.refresh(db_user)
 
+    return db_user
 
-@app.get('/users', status_code=HTTPStatus.OK, response_model=UserList)
+
+@app.get('/users/', status_code=HTTPStatus.OK, response_model=UserList)
 def read_users(
     skip: int = 0, limit: int = 100, session: Session = Depends(get_session)
 ):
     users = session.scalars(select(User).offset(skip).limit(limit)).all()
-    return {'user': users}
+    return {'users': users}
 
 
 @app.put(
