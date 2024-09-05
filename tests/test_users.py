@@ -76,8 +76,8 @@ def test_read_single_user(client, user):
     }
 
 
-def test_read_single_user_not_found(client, user):
-    response = client.get(f'/users/{user.id + 1}')
+def test_read_single_user_not_found(client):
+    response = client.get('/users/-1')
 
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json() == {'detail': 'User not found'}
@@ -102,9 +102,9 @@ def test_update_user(client, user, token):
     }
 
 
-def test_update_user_without_permission(client, user, token):
+def test_update_user_without_permission(client, other_user, token):
     response = client.put(
-        f'/users/{user.id + 1}',
+        f'/users/{other_user.id}',
         headers={'Authorization': f'Bearer {token}'},
         json={
             'username': 'giselle',
@@ -127,9 +127,9 @@ def test_delete_user(client, user, token):
     assert response.json() == {'message': 'User deleted'}
 
 
-def test_delete_user_without_permission(client, user, token):
+def test_delete_user_without_permission(client, other_user, token):
     response = client.delete(
-        f'/users/{user.id + 1}',
+        f'/users/{other_user.id}',
         headers={'Authorization': f'Bearer {token}'},
     )
 
