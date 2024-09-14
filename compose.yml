@@ -1,0 +1,25 @@
+services:
+  fastzero_database:
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: sysadmin
+      POSTGRES_DB: app_db
+      POSTGRES_PASSWORD: S34bsoK239
+    ports:
+      - "5432:5432"
+
+  fastzero_app:
+    image: fastzero_app
+    build: .
+    entrypoint: ./entrypoint.sh
+    ports:
+      - "8000:8000"
+    depends_on:
+      - fastzero_database
+    environment:
+      DATABASE_URL: postgresql+psycopg://sysadmin:S34bsoK239@localhost:5432/app_db
+
+volumes:
+  pgdata:
