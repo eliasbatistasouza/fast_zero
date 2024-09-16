@@ -1,25 +1,27 @@
 services:
   fastzero_database:
     image: postgres
+    env_file:
+      - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: sysadmin
-      POSTGRES_DB: app_db
-      POSTGRES_PASSWORD: S34bsoK239
     ports:
       - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   fastzero_app:
     image: fastzero_app
     build: .
+    env_file:
+      - .env
     entrypoint: ./entrypoint.sh
     ports:
       - "8000:8000"
     depends_on:
       - fastzero_database
-    environment:
-      DATABASE_URL: postgresql+psycopg://sysadmin:S34bsoK239@localhost:5432/app_db
-
 volumes:
   pgdata:
